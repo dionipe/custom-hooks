@@ -7,14 +7,12 @@ devel=$(git show-ref development | awk '{print $1}' | head -1)
 if [ $refs = $master ]; 
 then
         # updating master branch
-        GIT_WORK_TREE=/var/www/git-clone/<username>/<repo>/<branch> git checkout -f
+        GIT_WORK_TREE=/var/www/git-clone/<username>/<repo>/<branch> git checkout -f master
         rsync -qazHP -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" /var/www/git-clone/<username>/<repo>/<branch>/ username@ip.add.res.ses:/var/www/html/<branch> --exclude ".git/"
-else
-   if [ $refs = $devel ]; 
+elif [ $refs = $devel ]; 
    then
         # updating devel branch
-        GIT_WORK_TREE=/var/www/git-clone/<username>/<repo>/<branch> git checkout -f
+        GIT_WORK_TREE=/var/www/git-clone/<username>/<repo>/<branch> git checkout -f devel
         rsync -qazHP -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" /var/www/git-clone/<username>/<repo>/<branch>/ username@ip.add.res.ses:/var/www/html/<branch> --exclude ".git/"
-   fi
 fi
 exit 0
