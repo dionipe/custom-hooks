@@ -2,14 +2,14 @@
 GET_DIR=/var/opt/gitlab/git-data/repositories/<username>/<repo>.git
 refs=$(git log -1 --all | head -1 | awk '{print $2}')
 master=$(git show-ref master | awk '{print $1}')
-devel=$(git show-ref development | awk '{print $1}' | head -1)
+devel=$(git show-ref devel | awk '{print $1}' | head -1)
 
-if [ $refs = $master ]; 
+if [ $refs = $master ];
 then
         # updating master branch
         GIT_WORK_TREE=/var/www/git-clone/<username>/<repo>/<branch> git checkout -f master
         rsync -qazHP -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" /var/www/git-clone/<username>/<repo>/<branch>/ username@ip.add.res.ses:/var/www/html/<branch> --exclude ".git/"
-elif [ $refs = $devel ]; 
+elif [ $refs = $devel ];
    then
         # updating devel branch
         GIT_WORK_TREE=/var/www/git-clone/<username>/<repo>/<branch> git checkout -f devel
