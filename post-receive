@@ -4,13 +4,17 @@ refs=$(git log -1 --all | head -1 | awk '{print $2}')
 master=$(git show-ref master | awk '{print $1}')
 devel=$(git show-ref development | awk '{print $1}' | head -1)
 
-if [ $refs = $master ]; then
+if [ $refs = $master ]; 
+then
         # updating master branch
         GIT_WORK_TREE=/var/www/git-clone/<username>/<repo>/<branch> git checkout -f
         rsync -qazHP -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" /var/www/git-clone/<username>/<repo>/<branch>/ username@ip.add.res.ses:/var/www/html/<branch> --exclude ".git/"
-elif [ $refs = $devel ]; then
+else
+   if [ $refs = $devel ]; 
+   then
         # updating devel branch
         GIT_WORK_TREE=/var/www/git-clone/<username>/<repo>/<branch> git checkout -f
         rsync -qazHP -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" /var/www/git-clone/<username>/<repo>/<branch>/ username@ip.add.res.ses:/var/www/html/<branch> --exclude ".git/"
+   fi
 fi
 exit 0
